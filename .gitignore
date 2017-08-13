@@ -3,3 +3,4 @@
 database/
 wordpress/
 docker-compose.yml
+conf/my_proxy.conf
