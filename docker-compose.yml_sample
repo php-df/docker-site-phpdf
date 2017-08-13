@@ -1,0 +1,50 @@
+version: '2'
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: "phpdf-nginx-reverse-proxy"
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+      - ./conf/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
+  webapp1:
+      image: 'wordpress:4.8.1'
+      container_name: 'phpdf-wordpress'
+      expose:
+        - "81"
+      environment:
+        - "VIRTUAL_HOST=phpdf.com.br"
+# For local development
+#        - "VIRTUAL_HOST=local.phpdf.com.br"
+        - "WORDPRESS_DB_HOST=database-dns"
+        - "WORDPRESS_DB_USER=root"
+        - "WORDPRESS_DB_PASSWORD=abcd123456"
+        - "WORDPRESS_DB_NAME=wp_phpdf"
+      volumes:
+        - ./wordpress/wp-content/:/var/www/html/wp-content
+        - ./wordpress/php/php.ini:/usr/local/etc/php/php.ini:ro
+        - ./wordpress/php/log:/var/log/php
+      depends_on:
+        - database
+      links:
+        - database
+      external_links:
+       - phpdf-database:database-dns
+  database:
+    image: 'mysql'
+    container_name: 'phpdf-database'
+    ports:
+      - "3306:3306"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=abcd123456"
+      - "MYSQL_ROOT_HOST=0.0.0.0"
+      - "MYSQL_USER=admin2"
+      - "MYSQL_PASSWORD=abcd123456"
+      - "right=WRITE"
+    volumes:
+      - ./database/mysql/conf.d:/etc/mysql/conf.d
+      - ./database/mysql/mysql.conf.d:/etc/mysql/mysql.conf.d
+      - ./database/mysql/data:/var/lib/mysql
+      - ./database/mysql/log:/var/log/
