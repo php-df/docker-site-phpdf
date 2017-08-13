@@ -1,52 +1,27 @@
-# Docker Reverse Proxy
+# PHPDF Site - Docker
 
-### About
+[English Version](./README-EN.md)
 
-This solutions is used to bind multiple domains in specific port to docker contained applications, making it possible to have multiple containers running on different ports but responding to a standard port such as 80 for example.
+Agora é possível ter o site ter toda a Stack do novo site do PHPDF diretamente em sua máquina, possibilitando o acompanhamento, envio de sugestões e melhorias.
 
-### How to use
+### Sobre
 
-In this solution we use the "docker-compose" tool. To do this work just run the command below and add your host domain to "/etc/hosts":
+As soluções de proxy reverso desse repositório foram fornecidas pelo repo [devbrotherhood/docker-reverse-proxy](https://github.com/devbrotherhood/docker-reverse-proxy) e são usadas para vincular vários domínios em aplicativos específicos de porta para docker, permitindo que múltiplos contêineres sejam executados em diferentes portas, mas respondendo a uma porta padrão como 80 por exemplo.
 
-```
-    docker-compose up
-```
+### Como usar
 
-### Create Your Own Reverse Proxy
+Nesta solução, usamos a ferramenta "docker-compose" do Docker. Para fazer este trabalho.
+ 
+Vamos aos passos:
 
-The settings used by docker-compose are located inside the file "docker-compose.yml".
-
-You can customise "docker-compose.yml" and create according to your need.
-
-Below is an example of "docker-compose.yml" using reverse proxy.
-
+- Adicione seu host em `/etc/hosts`
+- Duplique os arquivos `docker-compose.yml_sample` e `./conf/my_proxy.conf_sample` respectivamente para `docker-compose.yml` e `conf/my_proxy.conf` ajustando de acordo com sua necessidade.  
+- Execute o comando abaixo para que o docker levante toda a stack da sua aplicação:
 
 ```
-version: '2'
-
-services:
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    ports:
-      - "80:80"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock
-      - ./conf/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
-
-  webapp1:
-    image: 'wordpress'
-    container_name: 'blog1'
-    expose:
-      - "81"
-    environment:
-      - "VIRTUAL_HOST=teste.local"
-    links:
-      - "nginx-proxy"
+     docker-compose up
 ```
 
+### Referências
 
-### References
-
-- https://blog.florianlopes.io/host-multiple-websites-on-single-host-docker/
-- https://www.digitalocean.com/community/questions/how-to-bind-multiple-domains-ports-80-and-443-to-docker-contained-applications
-- https://www.digitalocean.com/community/tutorials/docker-explained-how-to-containerize-and-use-nginx-as-a-proxy
+- https://github.com/devbrotherhood/docker-reverse-proxy
