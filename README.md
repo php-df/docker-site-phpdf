@@ -2,7 +2,7 @@
 
 [English Version](./README-EN.md)
 
-Agora é possível ter o site ter toda a Stack do novo site do PHPDF diretamente em sua máquina, possibilitando o acompanhamento, envio de sugestões e melhorias.
+Agora é possível ter toda a Stack do novo site do PHPDF diretamente em sua máquina, possibilitando o acompanhamento, envio de sugestões e melhorias.
 
 ### Sobre
 
